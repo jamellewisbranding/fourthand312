@@ -1,0 +1,13 @@
+{
+  "name": "Fourth & 312",
+  "short_name": "Fourth & 312",
+  "description": "Quick game recaps, player milestones, and fan takes on the Bears stories Chicago is talking about.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#111A2B",
+  "theme_color": "#111A2B",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
