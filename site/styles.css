@@ -629,3 +629,91 @@ h1, h2, h3, p { margin: 0; }
   .footer__meta { justify-items: end; text-align: right; }
   .footer__links { justify-content: flex-end; }
 }
+
+/* ---------- Motion ----------
+   Two moments, nothing else moves on its own:
+   1. "The snap": one load sequence in the hero. The field pans into place,
+      the logo settles, the orange first-down line draws, the headline rises,
+      then the sleeve stripes lay down.
+   2. The scoreboard flips like a stadium board the first time it scrolls
+      into view (motion.js adds .is-armed and .is-live).
+   People who ask their device for less motion get a still page. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__field {
+    animation: field-pan 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero__logo {
+    animation: settle 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.05s both;
+  }
+
+  .hero__title::before {
+    animation: draw-line 0.5s cubic-bezier(0.7, 0, 0.3, 1) 0.35s both;
+  }
+
+  .hero__title .line {
+    animation: rise 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  }
+  .hero__title .line:nth-child(1) { animation-delay: 0.45s; }
+  .hero__title .line:nth-child(2) { animation-delay: 0.55s; }
+
+  .hero__lede {
+    animation: lift 0.6s ease-out 0.75s backwards;
+  }
+
+  .hero__actions {
+    animation: settle 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.85s backwards;
+  }
+
+  .stripes span {
+    animation: draw-line 0.6s cubic-bezier(0.7, 0, 0.3, 1) backwards;
+  }
+  .stripes span:nth-child(1) { animation-delay: 0.9s; }
+  .stripes span:nth-child(2) { animation-delay: 0.96s; }
+  .stripes span:nth-child(3) { animation-delay: 1.02s; }
+
+  /* Scoreboard flip */
+  .scoreboard li { perspective: 500px; }
+  .scoreboard.is-armed:not(.is-live) .scoreboard__value { opacity: 0; }
+  .scoreboard.is-live .scoreboard__value {
+    transform-origin: 50% 0;
+    animation: flip 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .scoreboard.is-live li:nth-child(2) .scoreboard__value { animation-delay: 0.12s; }
+  .scoreboard.is-live li:nth-child(3) .scoreboard__value { animation-delay: 0.24s; }
+
+  /* Answers to a person's action */
+  .signup-form__input { transition: border-color 0.15s ease; }
+}
+
+@keyframes field-pan {
+  from { opacity: 0; transform: translateX(-4%) scale(1.04); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes settle {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes draw-line {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Masked rise: the line comes up out of its own baseline */
+@keyframes rise {
+  from { transform: translateY(100%); clip-path: inset(0 0 100% 0); }
+  to   { transform: translateY(0); clip-path: inset(0 0 0 0); }
+}
+
+@keyframes lift {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes flip {
+  0%   { opacity: 0; transform: rotateX(-90deg); }
+  60%  { opacity: 1; transform: rotateX(14deg); }
+  100% { opacity: 1; transform: rotateX(0); }
+}
