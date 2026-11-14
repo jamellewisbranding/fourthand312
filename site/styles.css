@@ -591,10 +591,41 @@ h1, h2, h3, p { margin: 0; }
   font-size: 1rem;
 }
 
+.footer__meta {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.footer__links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 22px;
+}
+
+.footer__links a {
+  display: inline-block;
+  padding-block: 6px;
+  color: var(--cream);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--orange);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  overflow-wrap: anywhere;
+}
+.footer__links a:hover { color: var(--orange-text); }
+
 @media (min-width: 640px) {
   .footer__inner {
     flex-direction: row;
     justify-content: space-between;
     text-align: left;
   }
+  .footer__meta { justify-items: end; text-align: right; }
+  .footer__links { justify-content: flex-end; }
 }
