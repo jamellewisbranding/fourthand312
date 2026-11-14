@@ -47,6 +47,7 @@
   --navy-soft: #4A5468;   /* small labels on cream */
   --navy-text: #263049;   /* body text on cream */
   --rule: rgba(17, 26, 43, 0.18);
+  --night: #030914;       /* sky in the stadium photo */
 
   --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", Impact, sans-serif;
   --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
@@ -84,6 +85,8 @@ body {
 
 img { display: block; max-width: 100%; height: auto; }
 
+[hidden] { display: none !important; }
+
 h1, h2, h3, p { margin: 0; }
 
 .wrap {
@@ -111,45 +114,81 @@ h1, h2, h3, p { margin: 0; }
   outline-offset: 4px;
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero: night game under the lights ---------- */
 .hero {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding-top: clamp(40px, 8vw, 96px);
-  background:
-    radial-gradient(ellipse 38% 34% at 0% 0%, rgba(247, 234, 219, 0.10), transparent 70%),
-    radial-gradient(ellipse 38% 34% at 100% 0%, rgba(247, 234, 219, 0.10), transparent 70%),
-    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(212, 88, 42, 0.16), transparent 75%),
-    var(--navy);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: clamp(32px, min(8vw, 7vh), 96px);
+  background: var(--night);
 }
 
-/* Yard lines and hash marks, faded at the edges */
+/* Stadium photo. Wide screens fill the frame; tall phone screens show the
+   whole width so both light towers stay in view, with night sky above. */
 .hero__field {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: -2;
+  background-color: var(--night);
+  background-image: url("assets/bg/stadium-lights-1122.jpg");
+  background-image: image-set(url("assets/bg/stadium-lights-1122.webp") type("image/webp"), url("assets/bg/stadium-lights-1122.jpg") type("image/jpeg"));
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 80%;
+}
+
+/* Darkens the middle and the edges so the headline always reads */
+.hero__field::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background:
-    repeating-linear-gradient(90deg, rgba(247, 234, 219, 0.055) 0 2px, transparent 2px 100%) 50% 0 / clamp(72px, 12vw, 140px) 100%,
-    repeating-linear-gradient(0deg, rgba(247, 234, 219, 0.04) 0 2px, transparent 2px 100%) 50% 0 / 100% 28px;
-  -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 55%, #000 30%, transparent 100%);
-  mask-image: radial-gradient(ellipse 80% 75% at 50% 55%, #000 30%, transparent 100%);
+    radial-gradient(ellipse 52% 46% at 50% 44%, rgba(3, 8, 18, 0.62), transparent 72%),
+    linear-gradient(180deg, rgba(3, 8, 18, 0.55) 0%, transparent 28%, transparent 72%, rgba(3, 8, 18, 0.65) 100%);
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .hero__field {
+    background-image: url("assets/bg/stadium-lights-800.jpg");
+    background-image: image-set(url("assets/bg/stadium-lights-800.webp") type("image/webp"), url("assets/bg/stadium-lights-800.jpg") type("image/jpeg"));
+    background-size: 100% auto;
+    background-position: 50% 100%;
+  }
+}
+
+/* Haze drifting through the lights */
+.hero__haze {
+  position: absolute;
+  inset: 0 -25%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 30% 22% at 28% 62%, rgba(140, 165, 210, 0.13), transparent 70%),
+    radial-gradient(ellipse 26% 18% at 72% 56%, rgba(247, 234, 219, 0.08), transparent 70%),
+    radial-gradient(ellipse 34% 20% at 50% 82%, rgba(212, 88, 42, 0.10), transparent 70%);
 }
 
 .hero__inner {
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
   max-width: calc(880px + var(--gutter) * 2);
   margin-inline: auto;
   padding-inline: var(--gutter);
-  padding-bottom: clamp(56px, 9vw, 112px);
+  padding-bottom: clamp(36px, min(9vw, 7vh), 112px);
 }
 
 .hero__logo {
   display: block;
-  width: min(100%, 520px);
+  /* shrinks on short screens so the ribbon board stays in the first view */
+  width: min(100%, 520px, 44vh);
 }
 .hero__logo img { width: 100%; }
 
@@ -235,6 +274,11 @@ h1, h2, h3, p { margin: 0; }
   flex: none;
 }
 
+/* Navy button for light backgrounds */
+.btn--navy { color: var(--cream); }
+.btn--navy::before { background: var(--navy); }
+.btn--navy:hover::before { background: var(--navy-raised); }
+
 @media (prefers-reduced-motion: reduce) {
   .btn, .btn::before { transition: none; }
   .btn:hover { transform: none; }
@@ -246,6 +290,96 @@ h1, h2, h3, p { margin: 0; }
 .stripes span:nth-child(1) { height: 4px; background: var(--cream); }
 .stripes span:nth-child(2) { height: 6px; background: var(--navy); }
 .stripes span:nth-child(3) { height: 10px; background: var(--orange); }
+
+/* ---------- Ribbon board (the LED strip along a stadium's upper deck) ---------- */
+.ribbon {
+  display: flex;
+  align-items: stretch;
+  height: 52px;
+  background: #04070e;
+  border-top: 1px solid rgba(247, 234, 219, 0.14);
+}
+
+.ribbon__tag {
+  flex: none;
+  display: flex;
+  align-items: center;
+  padding: 0 26px 0 var(--gutter);
+  background: var(--orange);
+  color: var(--navy-deep);
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 1.125rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+}
+.ribbon__tag:hover { background: var(--orange-hover); }
+.ribbon__tag:focus-visible { outline-offset: -4px; outline-color: var(--navy-deep); }
+
+.ribbon__viewport {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+}
+
+/* Dot pattern makes the type read like LED bulbs */
+.ribbon__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  -webkit-mask-image: radial-gradient(circle, #000 1.15px, transparent 1.45px);
+  mask-image: radial-gradient(circle, #000 1.15px, transparent 1.45px);
+  -webkit-mask-size: 3px 3px;
+  mask-size: 3px 3px;
+}
+
+.ribbon__item {
+  padding: 0 22px;
+  color: #FFE7C2;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 0 10px rgba(255, 190, 120, 0.55);
+}
+.ribbon__item b { color: #FF8A4C; font-weight: 900; }
+
+.ribbon__sep {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  background: #FF8A4C;
+  transform: rotate(45deg);
+}
+
+.ribbon__toggle {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid rgba(247, 234, 219, 0.14);
+  background: transparent;
+  color: var(--cream);
+  cursor: pointer;
+}
+.ribbon__toggle:hover { color: var(--orange-text); }
+.ribbon__toggle:focus-visible { outline-offset: -4px; }
+.ribbon__icon { width: 16px; height: 16px; }
+.ribbon__icon--play,
+.ribbon.is-paused .ribbon__icon--pause { display: none; }
+.ribbon.is-paused .ribbon__icon--play { display: block; }
 
 /* ---------- The 312 Rundown (weekly) ---------- */
 .rundown {
@@ -487,11 +621,45 @@ h1, h2, h3, p { margin: 0; }
   isolation: isolate;
   overflow: hidden;
   padding-block: clamp(64px, 11vw, 136px);
-  background:
-    radial-gradient(ellipse 60% 70% at 100% 100%, rgba(212, 88, 42, 0.14), transparent 70%),
-    var(--navy);
+  background-color: var(--navy);
+  background-image:
+    linear-gradient(90deg, rgba(17, 26, 43, 0.92) 0%, rgba(17, 26, 43, 0.7) 45%, rgba(17, 26, 43, 0.15) 100%),
+    url("assets/bg/stadium-spotlight-1122.jpg");
+  background-image:
+    linear-gradient(90deg, rgba(17, 26, 43, 0.92) 0%, rgba(17, 26, 43, 0.7) 45%, rgba(17, 26, 43, 0.15) 100%),
+    image-set(url("assets/bg/stadium-spotlight-1122.webp") type("image/webp"), url("assets/bg/stadium-spotlight-1122.jpg") type("image/jpeg"));
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 100% 0;
   scroll-margin-top: 0;
 }
+
+/* Spotlight beam from the light tower, top right */
+.debate::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  z-index: -2;
+  width: 120%;
+  height: 160%;
+  pointer-events: none;
+  background: conic-gradient(from 222deg at 100% 0%, transparent 0deg, rgba(220, 230, 255, 0.10) 8deg, rgba(220, 230, 255, 0.03) 18deg, transparent 26deg);
+  transform-origin: 100% 0%;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .debate {
+    background-image:
+      linear-gradient(180deg, rgba(17, 26, 43, 0.35) 0%, rgba(17, 26, 43, 0.82) 45%, rgba(17, 26, 43, 0.92) 100%),
+      url("assets/bg/stadium-spotlight-800.jpg");
+    background-image:
+      linear-gradient(180deg, rgba(17, 26, 43, 0.35) 0%, rgba(17, 26, 43, 0.82) 45%, rgba(17, 26, 43, 0.92) 100%),
+      image-set(url("assets/bg/stadium-spotlight-800.webp") type("image/webp"), url("assets/bg/stadium-spotlight-800.jpg") type("image/jpeg"));
+  }
+}
+
+.debate__actions { margin-top: clamp(28px, 4vw, 40px); }
 
 .debate__ghost {
   position: absolute;
@@ -568,6 +736,195 @@ h1, h2, h3, p { margin: 0; }
   font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
 }
 
+/* ---------- Join the huddle (live social posts) ---------- */
+.huddle {
+  background: var(--cream);
+  color: var(--navy);
+  padding-block: clamp(56px, 9vw, 112px);
+}
+
+.huddle__text {
+  max-width: 46ch;
+  margin-top: 20px;
+  color: var(--navy-text);
+  font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
+  text-wrap: pretty;
+}
+
+.huddle__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  margin-top: clamp(24px, 4vw, 32px);
+}
+
+.huddle__feeds {
+  display: grid;
+  gap: 40px;
+  margin-top: clamp(40px, 6vw, 64px);
+}
+
+.feed { min-width: 0; }
+
+.feed__title {
+  margin-bottom: 16px;
+  padding-top: 14px;
+  border-top: 3px solid var(--navy);
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.feed__link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-top: 8px;
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--orange);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.feed__link:hover { color: var(--orange-deep); }
+.feed__link:focus-visible,
+.huddle :focus-visible { outline-color: var(--navy); }
+
+/* Instagram grid */
+.ig__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ig__grid a {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--navy);
+}
+
+.ig__grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.ig__grid a:hover img { transform: scale(1.05); }
+
+.ig__grid a.is-video::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-style: solid;
+  border-width: 7px 0 7px 12px;
+  border-color: transparent transparent transparent var(--cream);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+}
+
+/* Shown until the Instagram feed is connected */
+.ig__fallback {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 12px;
+  min-height: 320px;
+  padding: 32px 24px;
+  background:
+    linear-gradient(180deg, rgba(17, 26, 43, 0.55), rgba(17, 26, 43, 0.92)),
+    url("assets/bg/stadium-lights-800.jpg") 50% 70% / cover no-repeat;
+  color: var(--cream);
+  text-align: center;
+  text-decoration: none;
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+}
+.ig__fallback img { width: 150px; height: auto; }
+.ig__handle {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.ig__cta {
+  color: var(--cream-muted);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--orange);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.ig__fallback:hover .ig__cta { color: var(--cream); }
+.ig__fallback:focus-visible { outline-color: var(--navy); }
+
+/* After posts load, the card shrinks to a link under the grid */
+.ig__fallback--small {
+  min-height: 0;
+  margin-top: 8px;
+  padding: 0;
+  background: none;
+  clip-path: none;
+  justify-items: start;
+}
+.ig__fallback--small picture,
+.ig__fallback--small .ig__handle { display: none; }
+.ig__fallback--small .ig__cta { color: var(--navy); }
+
+/* Facebook Page plugin */
+.fb {
+  position: relative;
+  max-width: 500px;
+  min-height: 560px;
+  background: #fff;
+  border: 1px solid var(--rule);
+}
+.fb::before {
+  content: "Loading posts from Facebook";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--navy-soft);
+  font-size: 0.9375rem;
+}
+.fb iframe {
+  position: relative;
+  display: block;
+  max-width: 100%;
+  border: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 900px) {
+  .huddle__head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 0 48px;
+  }
+  .huddle__head .section-title,
+  .huddle__text { grid-column: 1; }
+  .huddle__actions {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin-top: 0;
+  }
+  .huddle__feeds {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 500px);
+    gap: 48px;
+    align-items: start;
+  }
+  .fb { min-height: 640px; }
+}
+
 /* ---------- Footer ---------- */
 .footer {
   background: var(--navy-deep);
@@ -631,16 +988,24 @@ h1, h2, h3, p { margin: 0; }
 }
 
 /* ---------- Motion ----------
-   Two moments, nothing else moves on its own:
-   1. "The snap": one load sequence in the hero. The field pans into place,
+   1. "The snap": one load sequence in the hero. The stadium pans into place,
       the logo settles, the orange first-down line draws, the headline rises,
-      then the sleeve stripes lay down.
-   2. The scoreboard flips like a stadium board the first time it scrolls
-      into view (motion.js adds .is-armed and .is-live).
+      the stripes lay down and the ribbon board comes on.
+   2. Ambient: the camera slowly pushes in, haze drifts through the lights,
+      the ribbon board scrolls (with a pause button), and the spotlight in the
+      fan debate sweeps.
+   3. The scoreboard flips like a stadium board the first time it scrolls
+      into view (site.js adds .is-armed and .is-live).
    People who ask their device for less motion get a still page. */
 @media (prefers-reduced-motion: no-preference) {
   .hero__field {
-    animation: field-pan 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation:
+      field-pan 1.4s cubic-bezier(0.16, 1, 0.3, 1) both,
+      breathe 26s ease-in-out 1.4s infinite alternate;
+  }
+
+  .hero__haze {
+    animation: drift 30s ease-in-out infinite alternate;
   }
 
   .hero__logo {
@@ -665,12 +1030,29 @@ h1, h2, h3, p { margin: 0; }
     animation: settle 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.85s backwards;
   }
 
+  .ribbon {
+    animation: lift 0.6s ease-out 0.95s backwards;
+  }
+
   .stripes span {
     animation: draw-line 0.6s cubic-bezier(0.7, 0, 0.3, 1) backwards;
   }
   .stripes span:nth-child(1) { animation-delay: 0.9s; }
   .stripes span:nth-child(2) { animation-delay: 0.96s; }
   .stripes span:nth-child(3) { animation-delay: 1.02s; }
+
+  /* Ribbon board scroll. Stops on hover, on keyboard focus, or with the pause button. */
+  .ribbon__track {
+    animation: ticker var(--ribbon-duration, 40s) linear infinite;
+  }
+  .ribbon:hover .ribbon__track,
+  .ribbon:focus-within .ribbon__track,
+  .ribbon.is-paused .ribbon__track { animation-play-state: paused; }
+
+  /* Spotlight sweep in the fan debate */
+  .debate::before {
+    animation: sweep 12s ease-in-out infinite alternate;
+  }
 
   /* Scoreboard flip */
   .scoreboard li { perspective: 500px; }
@@ -686,9 +1068,35 @@ h1, h2, h3, p { margin: 0; }
   .signup-form__input { transition: border-color 0.15s ease; }
 }
 
+/* With reduced motion the ribbon sits still, so it needs no pause button */
+@media (prefers-reduced-motion: reduce) {
+  .ribbon__toggle { display: none; }
+  .ig__grid img { transition: none; }
+}
+
 @keyframes field-pan {
-  from { opacity: 0; transform: translateX(-4%) scale(1.04); }
-  to   { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translateX(-2%) scale(1.06); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes breathe {
+  from { transform: scale(1); }
+  to   { transform: scale(1.07) translateY(-1%); }
+}
+
+@keyframes drift {
+  from { transform: translateX(-8%); }
+  to   { transform: translateX(8%); }
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes sweep {
+  from { transform: rotate(-7deg); }
+  to   { transform: rotate(6deg); }
 }
 
 @keyframes settle {
