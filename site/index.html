@@ -132,7 +132,15 @@
           <p class="signup__text">The week’s biggest Bears stories, ranked and explained in plain English. One email a week. Unsubscribe anytime.</p>
         </div>
         <div class="signup__form" id="signup-form">
-          <!-- SIGNUP_EMBED: the email tool's signup form code goes here -->
+          <!-- Posts to the Kit form. Kit sends a confirm email, then sends people to /thanks/. -->
+          <form class="signup-form" action="https://app.kit.com/forms/KIT_FORM_ID/subscriptions" method="post">
+            <label class="signup-form__label" for="signup-email">Your email</label>
+            <div class="signup-form__row">
+              <input class="signup-form__input" id="signup-email" type="email" name="email_address" autocomplete="email" placeholder="you@example.com" required>
+              <button class="btn signup-form__btn" type="submit">Sign me up</button>
+            </div>
+            <p class="signup-form__note">We’ll send one quick email to confirm.</p>
+          </form>
         </div>
       </div>
     </section>
