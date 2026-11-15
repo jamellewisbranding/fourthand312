@@ -129,7 +129,7 @@
         <div class="signup__copy">
           <p class="eyebrow">Free every Tuesday</p>
           <h2 id="signup-title" class="signup__title">Get the Rundown <span class="accent">by email</span></h2>
-          <p class="signup__text">The week’s biggest Bears stories, ranked and explained in plain English. One email a week. Unsubscribe anytime.</p>
+          <p class="signup__text">The week’s biggest Bears stories and stats, ranked and explained in plain English. One email a week. Unsubscribe anytime.</p>
         </div>
         <div class="signup__form" id="signup-form">
           <!-- Posts to the Kit form. Kit sends a confirm email, then sends people to /thanks/. -->
@@ -227,6 +227,19 @@
   </main>
 
   <footer class="footer">
+    <!-- Second signup for people who read to the end. Same Kit form as the one under the Rundown. -->
+    <div class="wrap footer__signup">
+      <p class="footer__signup-title" id="footer-signup-title">Bears stats and updates every Tuesday</p>
+      <div class="footer__form">
+        <form class="signup-form" action="https://app.kit.com/forms/KIT_FORM_ID/subscriptions" method="post" aria-labelledby="footer-signup-title">
+          <label class="sr-only" for="footer-email">Your email</label>
+          <div class="signup-form__row">
+            <input class="signup-form__input" id="footer-email" type="email" name="email_address" autocomplete="email" placeholder="you@example.com" required>
+            <button class="btn signup-form__btn" type="submit">Sign me up</button>
+          </div>
+        </form>
+      </div>
+    </div>
     <div class="wrap footer__inner">
       <picture class="footer__logo">
         <source srcset="assets/fourth-and-312-logo.webp" type="image/webp">

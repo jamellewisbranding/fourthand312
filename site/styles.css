@@ -537,9 +537,16 @@ h1, h2, h3, p { margin: 0; }
 
 /* ---------- Email signup ---------- */
 .signup {
-  background:
-    radial-gradient(ellipse 55% 80% at 0% 100%, rgba(212, 88, 42, 0.14), transparent 70%),
-    var(--navy);
+  background-color: var(--navy);
+  background-image:
+    linear-gradient(90deg, rgba(17, 26, 43, 0.9) 0%, rgba(17, 26, 43, 0.55) 60%, rgba(17, 26, 43, 0.2) 100%),
+    url("assets/bg/field-fog-1122.jpg");
+  background-image:
+    linear-gradient(90deg, rgba(17, 26, 43, 0.9) 0%, rgba(17, 26, 43, 0.55) 60%, rgba(17, 26, 43, 0.2) 100%),
+    image-set(url("assets/bg/field-fog-1122.webp") type("image/webp"), url("assets/bg/field-fog-1122.jpg") type("image/jpeg"));
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 75%;
   color: var(--cream);
   padding-block: clamp(56px, 9vw, 104px);
 }
@@ -1025,6 +1032,33 @@ h1, h2, h3, p { margin: 0; }
   background: var(--navy-deep);
   border-top: 4px solid var(--orange);
   padding-block: 36px;
+}
+
+/* Footer signup */
+.footer__signup {
+  display: grid;
+  gap: 16px;
+  padding-bottom: 32px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgba(247, 234, 219, 0.14);
+}
+.footer__signup-title {
+  color: var(--cream);
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  line-height: 1;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.footer__form { container-type: inline-size; min-width: 0; }
+
+@media (min-width: 820px) {
+  .footer__signup {
+    grid-template-columns: 1fr minmax(0, 520px);
+    align-items: center;
+    gap: 40px;
+  }
 }
 
 .footer__inner {
