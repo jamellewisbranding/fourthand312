@@ -38,7 +38,10 @@
 
   <link rel="preload" href="assets/fonts/big-shoulders-display-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/bg/stadium-lights-1122.webp" as="image" type="image/webp" media="(min-aspect-ratio: 1/1)">
+  <link rel="preload" href="assets/bg/stadium-lights-800.webp" as="image" type="image/webp" media="(max-aspect-ratio: 1/1)">
   <link rel="stylesheet" href="styles.css">
+  <script src="site.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -47,6 +50,7 @@
     <!-- HERO -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__field" aria-hidden="true"></div>
+      <div class="hero__haze" aria-hidden="true"></div>
       <div class="hero__inner">
         <picture class="hero__logo">
           <source srcset="assets/fourth-and-312-logo.webp" type="image/webp">
@@ -60,13 +64,22 @@
         <p class="hero__lede">Quick game recaps, player milestones, and fan takes on the Bears stories Chicago is talking about.</p>
 
         <div class="hero__actions">
-          <!-- When the public Facebook Page URL is ready, swap this for:
-               <a class="btn btn--primary" href="FACEBOOK_PAGE_URL" rel="noopener">Follow on Facebook</a> -->
-          <a class="btn btn--primary" href="#debate">
-            See the fan debate
-            <svg class="btn__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 3v12m0 0-5-5m5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"/></svg>
+          <a class="btn btn--primary" href="https://www.facebook.com/profile.php?id=61596199782213" target="_blank" rel="noopener noreferrer">
+            Follow on Facebook<span class="sr-only"> (opens in a new tab)</span>
+            <svg class="btn__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M7 4h9v9M16 4 4 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"/></svg>
           </a>
         </div>
+      </div>
+
+      <!-- Ribbon board: site.js fills it from the Rundown below, so it updates itself each week -->
+      <div class="ribbon" hidden>
+        <a class="ribbon__tag" href="#rundown">This week</a>
+        <div class="ribbon__viewport" aria-hidden="true"><div class="ribbon__track"></div></div>
+        <button class="ribbon__toggle" type="button" aria-pressed="false">
+          <span class="sr-only">Pause the ticker</span>
+          <svg class="ribbon__icon ribbon__icon--pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 3h3v10H4zM9 3h3v10H9z" fill="currentColor"/></svg>
+          <svg class="ribbon__icon ribbon__icon--play" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>
+        </button>
       </div>
       <div class="stripes" aria-hidden="true"><span></span><span></span><span></span></div>
     </section>
@@ -143,6 +156,50 @@
         <h2 id="debate-title" class="debate__title">What makes a Bears <span class="accent">WR1?</span></h2>
         <p class="debate__lead">Big plays get attention. Third downs build trust.</p>
         <p class="debate__question">When you’re picking Chicago’s WR1, what matters most to you?</p>
+        <div class="debate__actions">
+          <a class="btn btn--primary" href="https://www.facebook.com/profile.php?id=61596199782213" target="_blank" rel="noopener noreferrer">
+            Answer on Facebook<span class="sr-only"> (opens in a new tab)</span>
+            <svg class="btn__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M7 4h9v9M16 4 4 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOIN THE HUDDLE: live Facebook and Instagram posts -->
+    <section class="huddle" id="huddle" aria-labelledby="huddle-title">
+      <div class="wrap">
+        <div class="huddle__head">
+          <h2 id="huddle-title" class="section-title">Join the huddle</h2>
+          <p class="huddle__text">The fan debate happens on Facebook. Graphics and reels drop on Instagram. Follow both and add your take.</p>
+          <div class="huddle__actions">
+            <a class="btn btn--primary" href="https://www.facebook.com/profile.php?id=61596199782213" target="_blank" rel="noopener noreferrer">Join on Facebook<span class="sr-only"> (opens in a new tab)</span></a>
+            <a class="btn btn--navy" href="https://www.instagram.com/fourthand312/" target="_blank" rel="noopener noreferrer">Follow on Instagram<span class="sr-only"> (opens in a new tab)</span></a>
+          </div>
+        </div>
+
+        <div class="huddle__feeds">
+          <div class="feed feed--ig">
+            <h3 class="feed__title">Latest on Instagram</h3>
+            <!-- To show posts: paste the Behold JSON feed URL into data-feed (behold.so, free plan) -->
+            <div class="ig" data-feed="">
+              <ul class="ig__grid" role="list" hidden></ul>
+              <a class="ig__fallback" href="https://www.instagram.com/fourthand312/" target="_blank" rel="noopener noreferrer">
+                <picture>
+                  <source srcset="assets/fourth-and-312-logo.webp" type="image/webp">
+                  <img src="assets/fourth-and-312-logo.png" width="1001" height="660" alt="" loading="lazy" decoding="async">
+                </picture>
+                <span class="ig__handle">@fourthand312</span>
+                <span class="ig__cta">See the latest posts on Instagram<span class="sr-only"> (opens in a new tab)</span></span>
+              </a>
+            </div>
+          </div>
+
+          <div class="feed feed--fb">
+            <h3 class="feed__title">Latest on Facebook</h3>
+            <div class="fb" data-page="https://www.facebook.com/profile.php?id=61596199782213"></div>
+            <a class="feed__link" href="https://www.facebook.com/profile.php?id=61596199782213" target="_blank" rel="noopener noreferrer">See all posts on Facebook<span class="sr-only"> (opens in a new tab)</span></a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -153,7 +210,14 @@
         <source srcset="assets/fourth-and-312-logo.webp" type="image/webp">
         <img src="assets/fourth-and-312-logo.png" width="1001" height="660" alt="Fourth &amp; 312" loading="lazy" decoding="async">
       </picture>
-      <p class="footer__text">Independent Chicago Bears fan page.</p>
+      <div class="footer__meta">
+        <ul class="footer__links" role="list" aria-label="Find Fourth &amp; 312">
+          <li><a href="https://www.facebook.com/profile.php?id=61596199782213" target="_blank" rel="noopener noreferrer">Facebook<span class="sr-only"> (opens in a new tab)</span></a></li>
+          <li><a href="https://www.instagram.com/fourthand312/" target="_blank" rel="noopener noreferrer">Instagram<span class="sr-only"> (opens in a new tab)</span></a></li>
+          <li><a href="mailto:hello@fourthand312.com">hello@fourthand312.com</a></li>
+        </ul>
+        <p class="footer__text">Independent Chicago Bears fan page.</p>
+      </div>
     </div>
   </footer>
 </body>
