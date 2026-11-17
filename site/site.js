@@ -3,7 +3,8 @@
    1. Ribbon board: builds the hero ticker from this week's Rundown.
    2. Scoreboard flip: flips the Rundown numbers once when they scroll in.
    3. Facebook: loads the Page's posts only when the visitor gets close.
-   4. Instagram: shows the latest posts from a Behold JSON feed, if one is set. */
+   4. Instagram: shows the latest posts from a Behold JSON feed, if one is set.
+   5. The Breakdown: once the game is over, marks the preview as played. */
 (function () {
   "use strict";
 
@@ -160,5 +161,18 @@
         }
       }).catch(function () { /* keep the Instagram card */ });
     });
+  })();
+
+  /* 5. The Breakdown: about 4 hours after kickoff the game is over, so the
+     preview gets a short note and the score-call button goes away until the
+     next edition replaces the block. */
+  (function breakdown() {
+    var box = document.querySelector(".breakdown[data-kickoff]");
+    if (!box) return;
+    var kickoff = Date.parse(box.getAttribute("data-kickoff"));
+    if (isNaN(kickoff) || Date.now() < kickoff + 4 * 60 * 60 * 1000) return;
+    box.classList.add("is-final");
+    var note = box.querySelector(".breakdown__status");
+    if (note) note.hidden = false;
   })();
 })();
